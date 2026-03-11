@@ -1,8 +1,9 @@
-﻿namespace Firmaro.Domain.Entities
+﻿using Firmaro.Domain.Entities.Base;
+
+namespace Firmaro.Domain.Entities
 {
-    public class User
+    public class User : Entity
     {
-        public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;

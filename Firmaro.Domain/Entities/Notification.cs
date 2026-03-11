@@ -1,8 +1,9 @@
-﻿namespace Firmaro.Domain.Entities
+﻿using Firmaro.Domain.Entities.Base;
+
+namespace Firmaro.Domain.Entities
 {
-    public class Notification
+    public class Notification : Entity
     {
-        public Guid Id { get; set; }
         public Guid AppointmentId { get; set; }
         public string Type { get; set; } = string.Empty;
         public string Channel { get; set; } = string.Empty;

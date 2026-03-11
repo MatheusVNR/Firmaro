@@ -1,10 +1,10 @@
-﻿using Firmaro.Domain.Enums;
+﻿using Firmaro.Domain.Entities.Base;
+using Firmaro.Domain.Enums;
 
 namespace Firmaro.Domain.Entities
 {
-    public class Appointment
+    public class Appointment : Entity
     {
-        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public string ClientName { get; set; } = string.Empty;
         public string ClientPhone { get; set; } = string.Empty;

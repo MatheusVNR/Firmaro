@@ -27,7 +27,6 @@ namespace Firmaro.Application.Services
 
             User user = new()
             {
-                Id = Guid.NewGuid(),
                 Name = request.Name,
                 Email = request.Email,
                 Phone = request.Phone,
