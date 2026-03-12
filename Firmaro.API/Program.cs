@@ -1,4 +1,5 @@
-using Firmaro.Application.Interfaces;
+using Firmaro.Application.Interfaces.Repositories;
+using Firmaro.Application.Interfaces.Services;
 using Firmaro.Application.Services;
 using Firmaro.Infrastructure.Auth;
 using Firmaro.Infrastructure.Data;
@@ -6,7 +7,6 @@ using Firmaro.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Cryptography;
 using System.Text;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -24,6 +24,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
 builder.Services.AddScoped<ITokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -41,11 +43,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 WebApplication app = builder.Build();
-
-var keyBytes = RandomNumberGenerator.GetBytes(32);
-var secret = Convert.ToBase64String(keyBytes);
-
-Console.WriteLine(secret);
 
 if (app.Environment.IsDevelopment())
 {

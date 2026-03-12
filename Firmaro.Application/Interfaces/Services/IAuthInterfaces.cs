@@ -1,6 +1,6 @@
 ﻿using Firmaro.Application.DTOs;
 
-namespace Firmaro.Application.Interfaces
+namespace Firmaro.Application.Interfaces.Services
 {
     public interface IPasswordHasher
     {

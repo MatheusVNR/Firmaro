@@ -1,4 +1,4 @@
-﻿using Firmaro.Application.Interfaces;
+﻿using Firmaro.Application.Interfaces.Services;
 
 namespace Firmaro.Infrastructure.Auth
 {

@@ -1,5 +1,6 @@
 ﻿using Firmaro.Application.DTOs;
-using Firmaro.Application.Interfaces;
+using Firmaro.Application.Interfaces.Repositories;
+using Firmaro.Application.Interfaces.Services;
 using Firmaro.Domain.Entities;
 
 namespace Firmaro.Application.Services

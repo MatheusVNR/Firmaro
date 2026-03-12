@@ -1,5 +1,5 @@
 ﻿using Firmaro.Application.DTOs;
-using Firmaro.Application.Interfaces;
+using Firmaro.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Firmaro.Api.Controllers

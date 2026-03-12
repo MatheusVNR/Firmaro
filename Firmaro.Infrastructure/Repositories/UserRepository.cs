@@ -1,4 +1,4 @@
-﻿using Firmaro.Application.Interfaces;
+﻿using Firmaro.Application.Interfaces.Repositories;
 using Firmaro.Domain.Entities;
 using Firmaro.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
