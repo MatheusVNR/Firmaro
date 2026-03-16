@@ -1,11 +1,6 @@
-using Firmaro.Application.Interfaces.Repositories;
-using Firmaro.Application.Interfaces.Services;
-using Firmaro.Application.Services;
-using Firmaro.Infrastructure.Auth;
-using Firmaro.Infrastructure.Data;
-using Firmaro.Infrastructure.Repositories;
+using Firmaro.Application;
+using Firmaro.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -16,16 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<FirmaroDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-    .UseSnakeCaseNamingConvention());
-
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
-builder.Services.AddScoped<ITokenGenerator, JwtTokenGenerator>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
