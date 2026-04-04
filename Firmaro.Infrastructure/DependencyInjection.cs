@@ -3,6 +3,8 @@ using Firmaro.Application.Interfaces.Services;
 using Firmaro.Infrastructure.Auth;
 using Firmaro.Infrastructure.Data;
 using Firmaro.Infrastructure.Repositories;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +16,7 @@ namespace Firmaro.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext(configuration);
+            services.AddHangfire(configuration);
             services.AddRepositories();
             services.AddAuthProviders();
 
@@ -23,8 +26,19 @@ namespace Firmaro.Infrastructure
         private static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<FirmaroDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+                options.UseNpgsql(GetConnectionString(configuration))
                        .UseSnakeCaseNamingConvention());
+        }
+
+        private static void AddHangfire(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHangfire(config => config
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(GetConnectionString(configuration))));
+
+            services.AddHangfireServer();
         }
 
         private static void AddRepositories(this IServiceCollection services)
@@ -38,5 +52,12 @@ namespace Firmaro.Infrastructure
             services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
             services.AddScoped<ITokenGenerator, JwtTokenGenerator>();
         }
+
+        #region Aux Methods
+        private static string? GetConnectionString(IConfiguration configuration)
+        {
+            return configuration.GetConnectionString("DefaultConnection");
+        }
+        #endregion
     }
 }
