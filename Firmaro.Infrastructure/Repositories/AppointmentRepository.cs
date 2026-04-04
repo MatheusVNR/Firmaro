@@ -26,6 +26,11 @@ namespace Firmaro.Infrastructure.Repositories
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
 
+        public async Task<Appointment?> GetByConfirmationTokenAsync(string token)
+        {
+            return await _context.Appointments.FirstOrDefaultAsync(f => f.ConfirmationToken == token);
+        }
+
         public async Task<IEnumerable<Appointment>> GetAllByUserIdAsync(Guid userId)
         {
             return await _context.Appointments

@@ -3,6 +3,7 @@ using Firmaro.Application.Interfaces.Repositories;
 using Firmaro.Application.Interfaces.Services;
 using Firmaro.Domain.Entities;
 using Firmaro.Domain.Enums;
+using System.Security.Cryptography;
 
 namespace Firmaro.Application.Services
 {
@@ -30,6 +31,7 @@ namespace Firmaro.Application.Services
                 ClientPhone = request.ClientPhone,
                 DateTime = request.DateTime,
                 Status = AppointmentStatus.Pending,
+                ConfirmationToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(16)).ToLower(),
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -92,6 +94,32 @@ namespace Firmaro.Application.Services
                 ?? throw new KeyNotFoundException("Agendamento não encontrado.");
 
             await _repository.DeleteAsync(appointment);
+        }
+
+        public async Task ConfirmByTokenAsync(string token)
+        {
+            // lembrar de trocar de exceptions para padrão Result depois
+
+            Appointment? appointment = await _repository.GetByConfirmationTokenAsync(token)
+                ?? throw new KeyNotFoundException("Link de confirmação inválido ou expirado.");
+
+            if (appointment.Status != AppointmentStatus.Pending)
+                throw new InvalidOperationException($"O agendamento não pode ser confirmado pois está: {appointment.Status}");
+
+            appointment.Status = AppointmentStatus.Confirmed;
+            await _repository.UpdateAsync(appointment);
+        }
+
+        public async Task CancelByTokenAsync(string token)
+        {
+            Appointment? appointment = await _repository.GetByConfirmationTokenAsync(token)
+                ?? throw new KeyNotFoundException("Link de cancelamento inválido ou expirado.");
+
+            if (appointment.Status == AppointmentStatus.Cancelled)
+                return;
+
+            appointment.Status = AppointmentStatus.Cancelled;
+            await _repository.UpdateAsync(appointment);
         }
     }
 }

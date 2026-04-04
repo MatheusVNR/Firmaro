@@ -9,5 +9,7 @@ namespace Firmaro.Application.Interfaces.Services
         Task<AppointmentResponse> GetByIdAsync(Guid id, Guid userId);
         Task UpdateAsync(Guid id, Guid userId, UpdateAppointmentRequest request);
         Task DeleteAsync(Guid id, Guid userId);
+        Task ConfirmByTokenAsync(string token);
+        Task CancelByTokenAsync(string token);
     }
 }
