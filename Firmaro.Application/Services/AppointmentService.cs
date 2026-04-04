@@ -9,9 +9,12 @@ namespace Firmaro.Application.Services
     public class AppointmentService : IAppointmentService
     {
         private readonly IAppointmentRepository _repository;
-        public AppointmentService(IAppointmentRepository appointmentRepository)
+        private readonly IJobScheduler _jobScheduler;
+        public AppointmentService(IAppointmentRepository appointmentRepository,
+                                  IJobScheduler jobScheduler)
         {
             _repository = appointmentRepository;
+            _jobScheduler = jobScheduler;
         }
 
 
@@ -31,6 +34,16 @@ namespace Firmaro.Application.Services
             };
 
             await _repository.AddAsync(appointment);
+
+            // No futuro, só pegar esse tempo da AutomationSettings
+            // porém, por enquanto, 24h antes do evento tá bão
+            DateTimeOffset reminderTime = appointment.DateTime.AddHours(-24);
+
+            // se essa data já passou, envia logo daqui a 1 minuto.
+            if (reminderTime < DateTime.UtcNow)
+                reminderTime = DateTime.UtcNow.AddMinutes(1);
+
+            _jobScheduler.ScheduleReminder(appointment.Id, reminderTime);
 
             return new AppointmentResponse(
                 appointment.Id,

@@ -2,7 +2,9 @@
 using Firmaro.Application.Interfaces.Services;
 using Firmaro.Infrastructure.Auth;
 using Firmaro.Infrastructure.Data;
+using Firmaro.Infrastructure.Jobs;
 using Firmaro.Infrastructure.Repositories;
+using Firmaro.Infrastructure.Services;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +21,7 @@ namespace Firmaro.Infrastructure
             services.AddHangfire(configuration);
             services.AddRepositories();
             services.AddAuthProviders();
+            services.AddServices();
 
             return services;
         }
@@ -51,6 +54,12 @@ namespace Firmaro.Infrastructure
         {
             services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
             services.AddScoped<ITokenGenerator, JwtTokenGenerator>();
+        }
+
+        private static void AddServices(this IServiceCollection services)
+        {
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IJobScheduler, HangfireJobScheduler>();
         }
 
         #region Aux Methods

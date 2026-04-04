@@ -18,7 +18,14 @@ namespace Firmaro.Infrastructure.Repositories
         {
             return await _context.Appointments.FirstOrDefaultAsync(a => a.Id == id && a.UserId == userId);
         }
-        
+
+        public async Task<Appointment?> GetByIdForSystemAsync(Guid id)
+        {
+            return await _context.Appointments
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.Id == id);
+        }
+
         public async Task<IEnumerable<Appointment>> GetAllByUserIdAsync(Guid userId)
         {
             return await _context.Appointments
