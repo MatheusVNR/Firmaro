@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Firmaro.API", "Firmaro.Api\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Firmaro.Worker", "Firmaro.Worker\Firmaro.Worker.csproj", "{EC40B2B0-B6F9-4CE9-AC2C-D41AF7F1BFA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Firmaro.WebUI", "Firmaro.WebUI\Firmaro.WebUI.csproj", "{3ED25577-B59B-4450-B166-0182727FC15A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,18 +85,6 @@ Global
 		{EC40B2B0-B6F9-4CE9-AC2C-D41AF7F1BFA9}.Release|x64.Build.0 = Release|Any CPU
 		{EC40B2B0-B6F9-4CE9-AC2C-D41AF7F1BFA9}.Release|x86.ActiveCfg = Release|Any CPU
 		{EC40B2B0-B6F9-4CE9-AC2C-D41AF7F1BFA9}.Release|x86.Build.0 = Release|Any CPU
-		{3ED25577-B59B-4450-B166-0182727FC15A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3ED25577-B59B-4450-B166-0182727FC15A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3ED25577-B59B-4450-B166-0182727FC15A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3ED25577-B59B-4450-B166-0182727FC15A}.Debug|x64.Build.0 = Debug|Any CPU
-		{3ED25577-B59B-4450-B166-0182727FC15A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3ED25577-B59B-4450-B166-0182727FC15A}.Debug|x86.Build.0 = Debug|Any CPU
-		{3ED25577-B59B-4450-B166-0182727FC15A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3ED25577-B59B-4450-B166-0182727FC15A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3ED25577-B59B-4450-B166-0182727FC15A}.Release|x64.ActiveCfg = Release|Any CPU
-		{3ED25577-B59B-4450-B166-0182727FC15A}.Release|x64.Build.0 = Release|Any CPU
-		{3ED25577-B59B-4450-B166-0182727FC15A}.Release|x86.ActiveCfg = Release|Any CPU
-		{3ED25577-B59B-4450-B166-0182727FC15A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
