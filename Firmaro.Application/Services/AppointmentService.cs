@@ -11,11 +11,15 @@ namespace Firmaro.Application.Services
     {
         private readonly IAppointmentRepository _repository;
         private readonly IJobScheduler _jobScheduler;
+        private readonly IAutomationSettingsService _settingsService;
+
         public AppointmentService(IAppointmentRepository appointmentRepository,
-                                  IJobScheduler jobScheduler)
+                                  IJobScheduler jobScheduler,
+                                  IAutomationSettingsService automationSettingsService)
         {
             _repository = appointmentRepository;
             _jobScheduler = jobScheduler;
+            _settingsService = automationSettingsService;
         }
 
 
@@ -36,16 +40,7 @@ namespace Firmaro.Application.Services
             };
 
             await _repository.AddAsync(appointment);
-
-            // No futuro, só pegar esse tempo da AutomationSettings
-            // porém, por enquanto, 24h antes do evento tá bão
-            DateTimeOffset reminderTime = appointment.DateTime.AddHours(-24);
-
-            // se essa data já passou, envia logo daqui a 1 minuto.
-            if (reminderTime < DateTime.UtcNow)
-                reminderTime = DateTime.UtcNow.AddMinutes(1);
-
-            _jobScheduler.ScheduleReminder(appointment.Id, reminderTime);
+            await ScheduleRemindersAsync(appointment);
 
             return new AppointmentResponse(
                 appointment.Id,
@@ -53,6 +48,23 @@ namespace Firmaro.Application.Services
                 appointment.ClientPhone,
                 appointment.DateTime,
                 appointment.Status.ToString());
+        }
+
+        private async Task ScheduleRemindersAsync(Appointment appointment)
+        {
+            AutomationSettings settings = await _settingsService.GetSettingsAsync(appointment.UserId);
+
+            if (settings.SendDayBefore)
+            {
+                DateTimeOffset dayBefore = appointment.DateTime.AddDays(-1);
+                _jobScheduler.ScheduleReminder(appointment.Id, dayBefore);
+            }
+
+            if (settings.SendHoursBefore > 0)
+            {
+                DateTimeOffset hoursBefore = appointment.DateTime.AddHours(-settings.SendHoursBefore);
+                _jobScheduler.ScheduleReminder(appointment.Id, hoursBefore);
+            }
         }
 
         public async Task<IEnumerable<AppointmentResponse>> GetAllAsync(Guid userId)

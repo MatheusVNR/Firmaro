@@ -48,6 +48,7 @@ namespace Firmaro.Infrastructure
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            services.AddScoped<IAutomationSettingsRepository, AutomationSettingsRepository>();
         }
 
         private static void AddAuthProviders(this IServiceCollection services)

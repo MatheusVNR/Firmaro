@@ -64,9 +64,9 @@ namespace Firmaro.Api.Extensions
                 }
             });
 
-            RecurringJob.AddOrUpdate("job-de-teste-inicial",
+            RecurringJob.AddOrUpdate("test-system-heartbeat",
                 () => Console.WriteLine($"[Hangfire] Sistema operando normalmente. Data/Hora: {DateTime.UtcNow}"),
-                Cron.Minutely);
+                Cron.MinuteInterval(10));
 
             return app;
         }

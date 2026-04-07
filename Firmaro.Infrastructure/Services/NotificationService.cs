@@ -1,10 +1,8 @@
 ﻿using Firmaro.Application.Interfaces.Repositories;
 using Firmaro.Application.Interfaces.Services;
 using Firmaro.Domain.Entities;
+using Firmaro.Domain.Enums;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Firmaro.Infrastructure.Services
 {
@@ -23,9 +21,9 @@ namespace Firmaro.Infrastructure.Services
         public async Task SendReminderAsync(Guid appointmentId)
         {
             Appointment? appointment = await _appointmentRepository.GetByIdForSystemAsync(appointmentId);
-            if (appointment == null)
+            if (appointment == null || appointment.Status == AppointmentStatus.Cancelled)
             {
-                _logger.LogWarning($"[Notification] Job abortado. Agendamento {appointmentId} não encontrado.");
+                _logger.LogWarning($"[Notification] Job abortado. Agendamento [{appointmentId}] não existe ou foi cancelado.");
                 return;
             }
 

@@ -10,14 +10,17 @@ namespace Firmaro.Application.Services
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly ITokenGenerator _tokenGenerator;
+        private readonly IAutomationSettingsService _automationSettingsService;
 
         public AuthService(IUserRepository userRepository, 
                            IPasswordHasher passwordHasher, 
-                           ITokenGenerator tokenGenerator)
+                           ITokenGenerator tokenGenerator,
+                           IAutomationSettingsService automationSettingsService)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
             _tokenGenerator = tokenGenerator;
+            _automationSettingsService = automationSettingsService;
         }
 
 
@@ -37,8 +40,9 @@ namespace Firmaro.Application.Services
             };
 
             await _userRepository.AddAsync(user);
-            string token = _tokenGenerator.GenerateToken(user.Id, user.Email);
+            await _automationSettingsService.CreateDefaultSettingsAsync(user.Id);
 
+            string token = _tokenGenerator.GenerateToken(user.Id, user.Email);
             return new AuthResponse(user.Id, user.Name, token);
         }
 

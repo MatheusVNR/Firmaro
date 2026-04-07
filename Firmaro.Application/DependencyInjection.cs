@@ -10,6 +10,7 @@ namespace Firmaro.Application
         {
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
+            services.AddScoped<IAutomationSettingsService, AutomationSettingsService>();
 
             return services;
         }
